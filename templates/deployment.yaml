@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: {{ template "fullname" . }}
@@ -8,6 +8,9 @@ metadata:
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
 spec:
+  selector:
+    matchLabels:
+      app: {{ template "fullname" . }}
   template:
     metadata:
       labels:
@@ -31,12 +34,12 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
           securityContext:
-            privileged: true  
+            privileged: true
           volumeMounts:
             - name: log
               mountPath: /var/run/docker.sock
           resources:
-{{ toYaml .Values.resources | indent 12 }}                 
+{{ toYaml .Values.resources | indent 12 }}
       volumes:
         - name: log
           hostPath:
