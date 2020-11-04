@@ -17,6 +17,7 @@ spec:
         app: {{ template "fullname" . }}
         release: {{ .Release.Name }}
     spec:
+      priorityClassName: system-node-critical
       hostPID: true
       hostIPC: true
       hostNetwork: true
